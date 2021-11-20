@@ -11,13 +11,13 @@ spring:
   application:
     name: kitchen-service
   profiles:
-    active: dev
+    active: qa
 
 server:
   port: 8200
 
 KAFKA_BOOSTRAPADDRESS: localhost:9192
-GROUPID: order
+GROUPID: kitchen
 
 eureka:
   client:

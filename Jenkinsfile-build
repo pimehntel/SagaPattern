@@ -1,0 +1,129 @@
+pipeline {
+    agent any
+    environment {
+        LOCAL_SERVER = '192.168.1.71'
+    }
+    tools {
+        maven 'M3_8_2'
+        nodejs 'NodeJS12'
+    }
+    
+    stages {
+        stage('Build and Analize order-service') {
+            when {
+                anyOf {
+                    changeset "*order-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('order-service/'){
+                    echo 'Execute Maven and Analizing with SonarServer'
+                    withSonarQubeEnv('SonarServer') {
+                        sh "mvn clean package -DskipTests"
+                    }
+                }
+            }
+        }
+
+        stage('Build and Analize payment-service') {
+            when {
+                anyOf {
+                    changeset "*payment-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('payment-service/'){
+                    echo 'Execute Maven and Analizing with SonarServer'
+                    withSonarQubeEnv('SonarServer') {
+                        sh "mvn clean package -DskipTests"
+                    }
+                }
+            }
+        }
+
+        stage('Build and Analize kitchen-service') {
+            when {
+                anyOf {
+                    changeset "*kitchen-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('kitchen-service/'){
+                    echo 'Execute Maven and Analizing with SonarServer'
+                    withSonarQubeEnv('SonarServer') {
+                        sh "mvn clean package -DskipTests"
+                    }
+                }
+            }
+        }
+
+        stage('Container Build order-service') {
+            when {
+                anyOf {
+                    changeset "*order-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('order-service/'){
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        sh 'docker login -u $USERNAME -p $PASSWORD'
+                        sh 'docker build -t primero21/order-service:v1 .'
+                        sh 'docker push primero21/order-service:v1'
+                    }
+                }
+            }
+        }
+
+        stage('Container Build payment-service') {
+            when {
+                anyOf {
+                    changeset "*payment-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('payment-service/'){
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        sh 'docker login -u $USERNAME -p $PASSWORD'
+                        sh 'docker build -t primero21/payment-service:v1 .'
+                        sh 'docker push primero21/payment-service:v1'
+                    }
+                }
+            }
+        }
+
+        stage('Container Build kitchen-service') {
+            when {
+                anyOf {
+                    changeset "*kitchen-service/**"
+                    expression { currentBuild.previousBuild.result != "SUCCESS"}
+                }
+            }
+            steps {
+                dir('kitchen-service/'){
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub_id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        sh 'docker login -u $USERNAME -p $PASSWORD'
+                        sh 'docker build -t primero21/kitchen-service:v1 .'
+                        sh 'docker push primero21/kitchen-service:v1'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            //deleteDir()
+            echo 'Always'
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        failure {
+            echo 'I failed :('
+        }
+    }
+}
