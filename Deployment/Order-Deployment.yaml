@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-one-dep
+  name: order-service-dep
 spec:
-  replicas: 3
+  replicas: 20
   selector:
     matchLabels:
-      app: microservice-one-pod
+      app: order-service-pod
   template:
     metadata:
       labels:
-        app: microservice-one-pod
+        app: order-service-pod
     spec:
       containers:
-      - name: microservice-one-container
-        image: primero21/microservicio-one:v1
+      - name: order-service-container
+        image: primero21/order-service:v1
         ports:
-        - containerPort: 8090
+        - containerPort: 8100
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
@@ -42,12 +42,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: microservice-one-svc
+  name: order-service-svc
 spec:
   selector:
-    app: microservice-one-pod
+    app: order-service-pod
   ports:
-  - port: 8090
+  - port: 8100
     protocol: TCP
-    targetPort: 8090
+    targetPort: 8100
   type: LoadBalancer

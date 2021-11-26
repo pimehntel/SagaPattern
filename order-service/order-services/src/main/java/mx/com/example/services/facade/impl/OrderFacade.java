@@ -58,6 +58,6 @@ public class OrderFacade implements IOrderFacade {
         if(payment.getStatus()==1)
             orderDAO.setStatusForOrderDO("APPROVED", payment.getUuid());
         else
-            orderDAO.setStatusForOrderDO("APPROVED", payment.getUuid());
+            orderDAO.setStatusForOrderDO("REJECTED", payment.getUuid());
     }
 }

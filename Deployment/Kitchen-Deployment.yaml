@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-two-dep
+  name: kitchen-service-dep
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: microservice-two-pod
+      app: kitchen-service-pod
   template:
     metadata:
       labels:
-        app: microservice-two-pod
+        app: kitchen-service-pod
     spec:
       containers:
-      - name: microservice-two-container
-        image: primero21/microservicio-two:v1
+      - name: kitchen-service-container
+        image: primero21/kitchen-service:v1
         ports:
-        - containerPort: 8100
+        - containerPort: 8200
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
@@ -42,12 +42,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: microservice-two-svc
+  name: kitchen-service-svc
 spec:
   selector:
-    app: microservice-two-pod
+    app: kitchen-service-pod
   ports:
-  - port: 8100
+  - port: 8200
     protocol: TCP
-    targetPort: 8100
+    targetPort: 8200
   type: ClusterIP
