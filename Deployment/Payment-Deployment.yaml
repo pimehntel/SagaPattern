@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-one-dep
+  name: payment-service-dep
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: microservice-one-pod
+      app: payment-service-pod
   template:
     metadata:
       labels:
-        app: microservice-one-pod
+        app: payment-service-pod
     spec:
       containers:
-      - name: microservice-one-container
-        image: primero21/microservicio-one:v1
+      - name: payment-service-container
+        image: primero21/payment-service:v1
         ports:
         - containerPort: 8090
         imagePullPolicy: Always
@@ -42,10 +42,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: microservice-one-svc
+  name: payment-service-svc
 spec:
   selector:
-    app: microservice-one-pod
+    app: payment-service-pod
   ports:
   - port: 8090
     protocol: TCP
