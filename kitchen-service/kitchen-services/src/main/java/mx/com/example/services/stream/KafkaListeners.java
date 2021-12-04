@@ -19,7 +19,7 @@ public class KafkaListeners {
     @Autowired
     private IKitchenFacade kitchenFacade;
 
-    //@KafkaListener(topics = "order_events", groupId = "kitchen")
+    @KafkaListener(topics = "order_events", groupId = "kitchen")
     public void orderEvents(String message) throws JsonProcessingException {
 
         OrderEventTO order = new ObjectMapper().readValue(message, OrderEventTO.class);
