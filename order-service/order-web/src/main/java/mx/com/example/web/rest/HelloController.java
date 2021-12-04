@@ -47,13 +47,13 @@ public class HelloController {
         return new ResponseEntity<>("pong", HttpStatus.OK);
     }
 
-    /* Esto es para usar un api rest en vez de kafka
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody OrderTO order) {
         OrderEventTO event=IOrderFacade.createOrder(order);
         return new ResponseEntity(event,HttpStatus.CREATED);
     }
 
+    /* Esto es para usar un api rest en vez de kafka    
     @RequestMapping(value = "/orders/confirm", method = RequestMethod.POST)
     public ResponseEntity confirm(@RequestBody PaymentEventTO payment) {
         IOrderFacade.updateOrder(payment);
