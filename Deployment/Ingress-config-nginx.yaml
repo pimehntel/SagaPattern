@@ -1,0 +1,19 @@
+#El despliegue de nginx se hace directo de la URL
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /prueba(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service-svc
+            port:
+              number: 8100
+  ingressClassName: nginx
