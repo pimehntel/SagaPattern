@@ -32,7 +32,7 @@ public class OrderFacade implements IOrderFacade {
     }
 
     @Override
-    public void createOrder(OrderTO order) {
+    public OrderEventTO createOrder(OrderTO order) {
 
         String uuid = UUID.randomUUID().toString();
         Date date = new Date();
@@ -50,7 +50,9 @@ public class OrderFacade implements IOrderFacade {
         orderDO.setDescription(order.getDescription());
 
         orderDAO.save(orderDO);
+        //Esto se comenta para no usar kafka
         kafkaTemplate.send("order_events", event);
+        return event;
     }
 
     @Override

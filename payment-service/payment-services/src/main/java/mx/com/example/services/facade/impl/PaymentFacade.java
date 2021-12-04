@@ -24,7 +24,7 @@ public class PaymentFacade implements IPaymentFacade {
     }
 
     @Override
-    public void createPayment(TicketEventTO ticketEvent) {
+    public PaymentEventTO createPayment(TicketEventTO ticketEvent) {
 
         //LANZAR PAGO
         PaymentEventTO paymentEvent = new PaymentEventTO();
@@ -42,6 +42,8 @@ public class PaymentFacade implements IPaymentFacade {
             paymentEvent.setStatus(0);
         }
 
+        //Esto se comenta para quitar kafka
         kafkaTemplate.send("payment_events", paymentEvent);
+        return paymentEvent;
     }
 }

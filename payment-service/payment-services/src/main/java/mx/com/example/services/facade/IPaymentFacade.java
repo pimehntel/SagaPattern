@@ -9,6 +9,6 @@ import java.util.List;
 public interface IPaymentFacade {
 
     List<UserTO> getAllUsers();
-    void createPayment(TicketEventTO ticketEvent);
+    PaymentEventTO createPayment(TicketEventTO ticketEvent);
 
 }

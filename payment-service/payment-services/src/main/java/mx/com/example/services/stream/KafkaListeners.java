@@ -19,6 +19,7 @@ public class KafkaListeners {
     @Autowired
     private IPaymentFacade paymentFacade;
 
+    //Esto se comenta para quitar lo de kafka
     @KafkaListener(topics = "ticket_events", groupId = "payment")
     public void ticketEvents(String message) throws JsonProcessingException {
 

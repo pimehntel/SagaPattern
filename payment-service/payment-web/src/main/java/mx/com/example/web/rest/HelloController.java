@@ -2,6 +2,8 @@ package mx.com.example.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import mx.com.example.commons.to.PaymentEventTO;
+import mx.com.example.commons.to.TicketEventTO;
 import mx.com.example.commons.to.UserTO;
 import mx.com.example.services.facade.IPaymentFacade;
 import org.apache.logging.log4j.LogManager;
@@ -42,5 +44,11 @@ public class HelloController {
             produces = "application/json")
     public ResponseEntity test() {
         return new ResponseEntity<>("pong", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/payments", method = RequestMethod.POST)
+    public ResponseEntity create(@RequestBody TicketEventTO ticket) {
+        PaymentEventTO payment = IPaymentFacade.createPayment(ticket);
+        return new ResponseEntity(payment, HttpStatus.CREATED);
     }
 }

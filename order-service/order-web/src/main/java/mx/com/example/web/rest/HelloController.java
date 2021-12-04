@@ -2,7 +2,9 @@ package mx.com.example.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import mx.com.example.commons.to.OrderEventTO;
 import mx.com.example.commons.to.OrderTO;
+import mx.com.example.commons.to.PaymentEventTO;
 import mx.com.example.commons.to.UserTO;
 import mx.com.example.services.facade.IOrderFacade;
 import org.apache.logging.log4j.LogManager;
@@ -45,10 +47,17 @@ public class HelloController {
         return new ResponseEntity<>("pong", HttpStatus.OK);
     }
 
+    /* Esto es para usar un api rest en vez de kafka
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody OrderTO order) {
-        IOrderFacade.createOrder(order);
-        return new ResponseEntity(HttpStatus.CREATED);
+        OrderEventTO event=IOrderFacade.createOrder(order);
+        return new ResponseEntity(event,HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/orders/confirm", method = RequestMethod.POST)
+    public ResponseEntity confirm(@RequestBody PaymentEventTO payment) {
+        IOrderFacade.updateOrder(payment);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    */
 }

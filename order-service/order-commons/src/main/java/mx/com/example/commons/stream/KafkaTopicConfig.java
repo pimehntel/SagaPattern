@@ -10,6 +10,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import java.util.HashMap;
 import java.util.Map;
 
+//Aqui se comenenta para quitar lo de kafka
 @Configuration
 public class KafkaTopicConfig {
 
